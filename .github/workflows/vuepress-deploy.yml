@@ -1,4 +1,4 @@
-name: Build and Deploy
+name: Build and  Deploy
 on: [push]
 jobs:
   build-and-deploy:
@@ -9,7 +9,7 @@ jobs:
 
     - name: blog-deploy
       uses: rongminli/blog@main
-      env:
+      env:  
         ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
         TARGET_REPO: rongminli/blog
         TARGET_BRANCH: deploy
