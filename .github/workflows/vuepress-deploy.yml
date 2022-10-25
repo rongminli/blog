@@ -4,11 +4,14 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
+    - name: Checkout
+      uses: actions/checkout@master
+
     - name: vuepress-deploy
-      uses: rongminli/blog@main
+      uses: jenkey2011/vuepress-deploy@master
       env:
         ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
         TARGET_REPO: rongminli/blog
-        TARGET_BRANCH: main
+        TARGET_BRANCH: deploy
         BUILD_SCRIPT: yarn && yarn docs:build
         BUILD_DIR: docs/.vuepress/dist
