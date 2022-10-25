@@ -1,4 +1,4 @@
-name: Build and  Deploy
+name: Build and Deploy
 on: [push]
 jobs:
   build-and-deploy:
@@ -7,11 +7,11 @@ jobs:
     - name: Checkout
       uses: actions/checkout@master
 
-    - name: blog-deploy
+    - name: vuepress-deploy
       uses: rongminli/blog@main
-      env:  
+      env:
         ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
         TARGET_REPO: rongminli/blog
-        TARGET_BRANCH: deploy
+        TARGET_BRANCH: main
         BUILD_SCRIPT: yarn && yarn docs:build
         BUILD_DIR: docs/.vuepress/dist
