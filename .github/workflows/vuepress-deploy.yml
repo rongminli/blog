@@ -7,7 +7,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@master
 
-    - name: vuepress-deploy
+    - name: blog-deploy
       uses: rongminli/blog@master
       env:
         ACCESS_TOKEN: ${{ setting.secrets.ACCESS_TOKEN }}
