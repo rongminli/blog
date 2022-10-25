@@ -8,11 +8,10 @@ jobs:
       uses: actions/checkout@master
 
     - name: vuepress-deploy
-      uses: jenkey2011/vuepress-deploy@master
+      uses: rongminli/blog@master
       env:
-        ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-        TARGET_REPO: username/repo
+        ACCESS_TOKEN: ${{ setting.secrets.ACCESS_TOKEN }}
+        TARGET_REPO: rongminli/blog
         TARGET_BRANCH: master
         BUILD_SCRIPT: yarn && yarn docs:build
         BUILD_DIR: docs/.vuepress/dist
-        CNAME: https://www.xxx.com
