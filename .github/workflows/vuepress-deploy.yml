@@ -10,7 +10,7 @@ jobs:
     - name: blog-deploy
       uses: rongminli/blog@master
       env:
-        ACCESS_TOKEN: ${{ setting.secrets.ACCESS_TOKEN }}
+        ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
         TARGET_REPO: rongminli/blog
         TARGET_BRANCH: master
         BUILD_SCRIPT: yarn && yarn docs:build
