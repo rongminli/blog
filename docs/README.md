@@ -1,12 +1,5 @@
-# foo
+# [foo](/foo)
 [one](/foo/one.md)
 
-::: danger STOP
-危险区域，禁止通行
-:::
+![image](./image/1.png)
 
-::: details 点击查看代码
-```js
-console.log('你好，VuePress！')
-```
-:::
