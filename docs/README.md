@@ -1,6 +1,7 @@
 ---
 sidebar: auto
 ---
+
 # Rust
 ## [第六章 枚举和模式匹配](rust/6.enums_and_pattern_matching.md)  
 
