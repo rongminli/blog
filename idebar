@@ -1,0 +1,243 @@
+[33mcommit 6d728e172d99d68cdd684df9cdbff3e1dab65d92[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: rongminli <1055310405@qq.com>
+Date:   Wed Nov 2 14:51:07 2022 +0800
+
+    完成第六章 第一节 枚举
+
+[1mdiff --git a/docs/.vuepress/config.js b/docs/.vuepress/config.js[m
+[1mindex 9d88733..89ae42d 100644[m
+[1m--- a/docs/.vuepress/config.js[m
+[1m+++ b/docs/.vuepress/config.js[m
+[36m@@ -6,12 +6,16 @@[m [mmodule.exports = {[m
+         nav: [[m
+             { text: 'Home', link: '/' }[m
+         ],[m
+[31m-        sidebar:{[m
+[32m+[m[32m        sidebar: {[m
+             '/rust/': [[m
+                 '6.enums_and_pattern_matching',[m
+                 '8.common_collections'[m
+             ][m
+         },[m
+[31m-        sidebarDepth: 2[m
+[32m+[m[32m        sidebarDepth: 2,[m
+[32m+[m
+[32m+[m[32m    },[m
+[32m+[m[32m    markdown: {[m
+[32m+[m[32m        lineNumbers: true[m
+     }[m
+ }[m
+\ No newline at end of file[m
+[1mdiff --git a/docs/README.md b/docs/README.md[m
+[1mindex d22216d..3e1bdc7 100644[m
+[1m--- a/docs/README.md[m
+[1m+++ b/docs/README.md[m
+[36m@@ -4,6 +4,8 @@[m [msidebar: auto[m
+ [m
+ # Rust[m
+ ## [第六章 枚举和模式匹配](rust/6.enums_and_pattern_matching.md)  [m
+[32m+[m[32m本章我们将讨论枚举。枚举允许你通过例举类型可能的变体来定义类型。首先，我们定义并使用一个枚举来演示enum如何表示数据的意义。下一步我们将探索一个特别有用的枚举，叫做`Option`,它表示一个值可能是某种东西或者什么也不是。然后我们将看看如何使用`match`进行模式匹配，从而轻松的根据一个enum的不同值去执行不同的代码。最后，我们将介绍if let构造如何成为在代码中处理枚举的另一个方便而简洁的习惯用法。[m
+[32m+[m
+ [m
+ ## [第八章 常用集合](rust/8.common_collections.md)  [m
+ rust标准库中包含一些非常有用的集合数据类型。大多数其他的数据类型表示一个特定的值，但是集合可以包含多个值。与内建的array和tuple类型不同，集合类型的数据储存在堆中，这意味着集合里面的数据量可以在运行时增加或者减少。不同的集合类型拥有不同的功能和性能。在本章中，我们将讨论三个十分常用的集合类型。[m
+[1mdiff --git a/docs/rust/6.enums_and_pattern_matching.md b/docs/rust/6.enums_and_pattern_matching.md[m
+[1mindex cb668bd..047251b 100644[m
+[1m--- a/docs/rust/6.enums_and_pattern_matching.md[m
+[1m+++ b/docs/rust/6.enums_and_pattern_matching.md[m
+[36m@@ -1 +1,240 @@[m
+[31m-# 第六章 枚举和模式匹配[m
+\ No newline at end of file[m
+[32m+[m[32m# 第六章 枚举和模式匹配[m
+[32m+[m[32m本章我们将讨论枚举。枚举允许你通过例举类型可能的变体来定义类型。首先，我们定义并使用一个枚举来演示enum如何表示数据的意义。下一步我们将探索一个特别有用的枚举，叫做`Option`,它表示一个值可能是某种东西或者什么也不是。然后我们将看看如何使用`match`进行模式匹配，从而轻松的根据一个enum的不同值去执行不同的代码。最后，我们将介绍if let构造如何成为在代码中处理枚举的另一个方便而简洁的习惯用法。[m
+[32m+[m
+[32m+[m[32m## 6.1 创建枚举[m
+[32m+[m[32mstructs提供了一种将字段了数据组织在一起的方法，例如矩形有它的宽和高，enum则提供了一种表示值是一组可能值中的一个的方法。[m
+[32m+[m
+[32m+[m[32m比如说我们需要使用IP地址。目前，IP地址使用两个主要标准:版本4和版本6。因为这些是我们的程序所遇到的IP地址的唯二可能性，所以我们可以枚举所有可能的变量，这就是枚举名称的由来。[m
+[32m+[m
+[32m+[m[32m任何IP地址都可以是版本4或版本6的地址，但不能同时是两者。IP地址的这个属性使得枚举数据结构非常合适，因为枚举值只能是它的一个变体。版本4和版本6的地址基本上仍然是IP地址，因此当代码处理适用于任何类型的IP地址的情况时，应该将它们视为同一类型。[m
+[32m+[m
+[32m+[m[32m我们可以通过定义一个IpAddrKind枚举并列出IP地址可能的类型V4和V6来在代码中表达这个概念。以下是枚举的变体:[m
+[32m+[m
+[32m+[m[32m``` rust[m
+[32m+[m[32menum IpAddrKind {[m
+[32m+[m[32m    V4,[m
+[32m+[m[32m    V6,[m
+[32m+[m[32m}[m
+[32m+[m[32m```[m
+[32m+[m
+[32m+[m[32mIpAddrKind现在是一个自定义数据类型，我们可以在代码的其他地方使用它。[m
+[32m+[m
+[32m+[m[32m### 6.1.1 enum的值[m
+[32m+[m[32m我们可以像这样分别创建IpAddrKind的两个变体的实例:[m
+[32m+[m[32m``` rust[m
+[32m+[m[32mlet four = IpAddrKind::V4;[m
+[32m+[m[32mlet six = IpAddrKind::V6;[m
+[32m+[m[32m```[m
+[32m+[m[32m注意，枚举变量的名称空间位于其标识符之下，我们使用双冒号将两者分隔开。这很有用，因为现在IpAddrKind::V4和IpAddrKind::V6的值都具有相同的类型:IpAddrKind。例如，我们可以定义一个接受任何IpAddrKind的函数:[m
+[32m+[m[32m``` rust[m
+[32m+[m[32mfn route(ip_kind: IpAddrKind) {}[m
+[32m+[m[32m```[m
+[32m+[m[32m我们可以用任意一个变体调用这个函数:[m
+[32m+[m[32m``` rust[m
+[32m+[m[32mroute(IpAddrKind::V4);[m
+[32m+[m[32mroute(IpAddrKind::V6);[m
+[32m+[m[32m```[m
+[32m+[m[32m使用枚举还有更多的优点。考虑到我们的IP地址类型，目前我们还没有办法存储实际的IP地址数据;我们只知道它是什么。鉴于您刚刚在第5章中学习了结构，您可能会想用清单6-1所示的结构来解决这个问题。[m
+[32m+[m[32m``` rust[m
+[32m+[m[32menum IpAddrKind {[m
+[32m+[m[32m    V4,[m
+[32m+[m[32m    V6,[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mstruct IpAddr {[m
+[32m+[m[32m    kind: IpAddrKind,[m
+[32m+[m[32m    address: String,[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mlet home = IpAddr {[m
+[32m+[m[32m    kind: IpAddrKind::V4,[m
+[32m+[m[32m    address: String::from("127.0.0.1"),[m
+[32m+[m[32m};[m
+[32m+[m
+[32m+[m[32mlet loopback = IpAddr {[m
+[32m+[m[32m    kind: IpAddrKind::V6,[m
+[32m+[m[32m    address: String::from("::1"),[m
+[32m+[m[32m};[m
+[32m+[m[32m```[m
+[32m+[m[32m清单6-1:使用结构存储IP地址的数据和IpAddrKind变体[m
+[32m+[m
+[32m+[m[32m在这里，我们定义了一个结构IpAddr，它有两个字段:一个类型为IpAddrKind的字段(前面定义的enum)，一个类型为String的地址字段。我们有这个结构的两个实例。第一个是home，它的类型值为IpAddrKind::V4，其关联的地址数据为127.0.0.1。第二个实例是环回。它有IpAddrKind的另一个变体作为它的类型值V6，并有与它相关的address::1。我们使用了一个结构将类型值和地址值捆绑在一起，因此现在变量与值相关联。[m
+[32m+[m
+[32m+[m[32m然而，仅使用枚举表示相同的概念更为简洁:与在结构中使用枚举相比，我们可以直接将数据放入每个枚举变体中。这个IpAddr enum的新定义表示V4和V6变量都将有关联的String值:[m
+[32m+[m[32m``` rust[m
+[32m+[m[32menum IpAddr {[m
+[32m+[m[32m    V4(String),[m
+[32m+[m[32m    V6(String),[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mlet home = IpAddr::V4(String::from("127.0.0.1"));[m
+[32m+[m
+[32m+[m[32mlet loopback = IpAddr::V6(String::from("::1"));[m
+[32m+[m[32m```[m
+[32m+[m[32m我们直接将数据附加到枚举的每个变体，因此不需要额外的结构。在这里，也更容易看到枚举工作方式的另一个细节:我们定义的每个enum变量的名称也成为构造枚举实例的函数。也就是说，IpAddr::V4()是一个接受String参数并返回IpAddr类型实例的函数调用。我们将自动获得作为定义enum结果而定义的构造函数。[m
+[32m+[m
+[32m+[m[32m使用枚举而不是结构的另一个优点是:每个变量可以具有不同的关联数据类型和数量。版本4类型的IP地址总是有四个数值组件，它们的值在0到255之间。如果我们想要将V4地址存储为四个u8值，但仍然将V6地址表示为一个String值，那么就不能使用struct。枚举可以轻松地处理这种情况:[m
+[32m+[m
+[32m+[m[32m``` rust[m
+[32m+[m[32menum IpAddr {[m
+[32m+[m[32m    V4(u8, u8, u8, u8),[m
+[32m+[m[32m    V6(String),[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mlet home = IpAddr::V4(127, 0, 0, 1);[m
+[32m+[m
+[32m+[m[32mlet loopback = IpAddr::V6(String::from("::1"));[m
+[32m+[m[32m```[m
+[32m+[m
+[32m+[m[32m我们已经展示了几种不同的方法来定义数据结构来存储版本4和版本6的IP地址。然而，事实证明，想要存储IP地址并对它们的类型进行编码是如此普遍，以至于标准库有一个我们可以使用的定义!让我们看看标准库是如何定义IpAddr的:它有我们已经定义和使用过的确切的枚举和变量，但它将地址数据以两种不同结构的形式嵌入到变量中，对每个变量定义不同:[m
+[32m+[m
+[32m+[m[32m``` rust[m
+[32m+[m[32mstruct Ipv4Addr {[m
+[32m+[m[32m    // --snip--[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mstruct Ipv6Addr {[m
+[32m+[m[32m    // --snip--[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32menum IpAddr {[m
+[32m+[m[32m    V4(Ipv4Addr),[m
+[32m+[m[32m    V6(Ipv6Addr),[m
+[32m+[m[32m}[m
+[32m+[m[32m```[m
+[32m+[m
+[32m+[m[32m这段代码说明了您可以在枚举变量中放入任何类型的数据:例如，字符串、数字类型或结构。你甚至可以包含另一个枚举!此外，标准库类型通常并不比您可能想到的复杂多少。[m
+[32m+[m
+[32m+[m[32m注意，即使标准库包含IpAddr的定义，我们仍然可以创建和使用我们自己的定义而不会产生冲突，因为我们还没有将标准库的定义带入我们的作用域。我们将在第7章详细讨论将类型引入作用域。[m
+[32m+[m
+[32m+[m[32m让我们看一下清单6-2中枚举的另一个例子:这个枚举的变体中嵌入了各种各样的类型。[m
+[32m+[m[32m``` rust[m
+[32m+[m[32menum Message {[m
+[32m+[m[32m    Quit,[m
+[32m+[m[32m    Move { x: i32, y: i32 },[m
+[32m+[m[32m    Write(String),[m
+[32m+[m[32m    ChangeColor(i32, i32, i32),[m
+[32m+[m[32m}[m
+[32m+[m[32m```[m
+[32m+[m[32m清单6-2:Message enum，其变体每个都存储不同数量和类型的值[m
+[32m+[m
+[32m+[m[32m这个枚举有四个不同类型的变体:[m
+[32m+[m[32m- Quit没有与之关联的任何数据。[m
+[32m+[m[32m- Move像struct一样命名字段。[m
+[32m+[m[32m- Write包含一个字符串。[m
+[32m+[m[32m- ChangeColor包含三个i32值。[m
+[32m+[m
+[32m+[m[32m定义带有变量(如清单6-2所示)的enum类似于定义不同类型的结构定义，不同之处在于enum不使用struct关键字，并且所有变量都被分组在Message类型下。以下结构可以与前面的枚举变量保存相同的数据:[m
+[32m+[m[32m``` rust[m[41m [m
+[32m+[m[32mstruct QuitMessage; // unit struct[m
+[32m+[m[32mstruct MoveMessage {[m
+[32m+[m[32m    x: i32,[m
+[32m+[m[32m    y: i32,[m
+[32m+[m[32m}[m
+[32m+[m[32mstruct WriteMessage(String); // tuple struct[m
+[32m+[m[32mstruct ChangeColorMessage(i32, i32, i32); // tuple struct[m
+[32m+[m[32m```[m
+[32m+[m
+[32m+[m[32m但是如果我们使用不同的struct，我们将很难轻松的创建一个方法去处理他们，因为他们有不同的类型。[m
+[32m+[m
+[32m+[m[32menum和struct的另一个共同点是：我们都可以使用`impl`为他创建方法。下面我们为`Message`创建一个叫`call`的方法。[m
+[32m+[m
+[32m+[m[32m``` rust[m
+[32m+[m[32mimpl Message {[m
+[32m+[m[32m    fn call(&self) {[m
+[32m+[m[32m        // method body would be defined here[m
+[32m+[m[32m    }[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mlet m = Message::Write(String::from("hello"));[m
+[32m+[m[32mm.call();[m
+[32m+[m[32m```[m
+[32m+[m
+[32m+[m[32m在方法体中我们可以使用`self`来获取调用这的值。在这个例子中，我们创建了值为`Message::Write(String::from("hello"))的变量`m`，当`m.call()`方法运行时，`self`指向的也是这个值。[m
+[32m+[m
+[32m+[m[32m让我们来看看另一个在标准库中很常用的enum:`Option`。[m
+[32m+[m
+[32m+[m[32m### 6.1.2 Option enum,及其相对于空值的优点[m
+[32m+[m[32m本节我们将通过一个案例来研究标准库中的一个enum —— `Option`，它适用于某个值可能有也可能没有的情况。[m
+[32m+[m
+[32m+[m[32m例如，当你获取一个列表中的第一个值，但是这个列表为空，那么你会得到一个`nothing`。类型系统中的这个概念意味着编译器可以检查你是否处理了所有可能的情况。这个特性可以防止很多在其他编程语言中常见的bug。[m
+[32m+[m
+[32m+[m[32m不同于其他编程语言，Rust没有用于表示“没有值”的null。在有null的编程语言中，一个变量总是有可能指向null。Tony Hoare在他2009年的报告[“Null引用: 价值白亿的错误”](https://hackernoon.com/null-the-billion-dollar-mistake-8t5z32d6)中说道:[m
+[32m+[m
+[32m+[m[32m> 我称它为"价值百亿的错误"，当时，我在实际第一个面向对象语言中的类型系统。我的目标输确保在编译器检查过后，所有的引用都绝对安全。但是我没有经受住null引用的诱惑，因为它太容易实现了。这导致了数不尽的错误，缺陷，和系统崩溃，在往后的四十年中造成了无数的痛苦。[m
+[32m+[m
+[32m+[m[32m空值的问题在于，如果试图将空值用作非空值，就会得到某种类型的错误。因为这个null或not-null属性是普遍存在的，所以非常容易犯这种错误。[m
+[32m+[m
+[32m+[m[32m然而，null试图表达的概念仍然是有用的:null是当前由于某种原因无效或不存在的值。[m
+[32m+[m
+[32m+[m[32m问题不在于概念，而在于具体的实现。因此，Rust没有空值，但它有一个枚举，可以编码值存在或不存在的概念。这个enum是`Option<T>`，它由标准库定义如下:[m
+[32m+[m
+[32m+[m[32m``` rust[m
+[32m+[m[32menum Option<T> {[m
+[32m+[m[32m    None,[m
+[32m+[m[32m    Some(T),[m
+[32m+[m[32m}[m
+[32m+[m[32m```[m
+[32m+[m
+[32m+[m[32m`Option<T>` enum非常有用，它甚至被提前引入;您不需要显式地将它带入作用域。它的变体也被提前引入:您可以直接使用Some和None，而不用Option::前缀。`Option<T>` enum仍然只是一个常规enum, Some(T)和None仍然是`Option<T>`类型的变体。[m
+[32m+[m
+[32m+[m[32m`<T>`语法是Rust的一个特性，我们还没有讨论过。它是一个泛型类型参数，我们将在第10章更详细地讨论泛型。现在，您只需要知道`<T>`意味着Option枚举的Some变体可以保存任何类型的数据，而用于代替T的每个具体类型使整个`Option<T>`类型成为不同的类型。下面是一些使用Option值保存数字类型和字符串类型的例子:[m
+[32m+[m
+[32m+[m[32m``` rust[m
+[32m+[m[32mlet some_number = Some(5);[m
+[32m+[m[32mlet some_char = Some('e');[m
+[32m+[m
+[32m+[m[32mlet absent_number: Option<i32> = None;[m
+[32m+[m
+[32m+[m[32m```[m
+[32m+[m
+[32m+[m[32msome_number的类型是`Option<i32>`。some_char的类型是`Option<char>`，这是一个不同的类型。Rust通过我们在Some变量中指定的值推断出这些类型。对于absent_number, Rust要求我们注释整个Option类型:编译器不能仅通过查看None值来推断相应的Some变体将持有的类型。在这里，我们告诉Rust，我们的意思是让absent_number的类型为`Option<i32>`。[m
+[32m+[m
+[32m+[m[32m当我们有一个Some值时，我们知道一个值是存在的，并且该值被保存在Some中。当我们有一个None值时，在某种意义上，它的意思和null是一样的:我们没有一个有效的值。为什�
