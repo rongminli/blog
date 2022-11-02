@@ -6,12 +6,16 @@ module.exports = {
         nav: [
             { text: 'Home', link: '/' }
         ],
-        sidebar:{
+        sidebar: {
             '/rust/': [
                 '6.enums_and_pattern_matching',
                 '8.common_collections'
             ]
         },
-        sidebarDepth: 2
+        sidebarDepth: 2,
+
+    },
+    markdown: {
+        lineNumbers: true
     }
 }
