@@ -16,3 +16,6 @@ rust标准库中包含一些非常有用的集合数据类型。大多数其他�
 本章我们将讨论如何创建和更新vector、string和hash map，以及它们的特殊之处。
 
 可一个查看[官方文档](https://doc.rust-lang.org/std/collections/index.html)来学习标准库中提供的其他集合类型。 
+
+# 编程语言
+## [编程语言中的null值问题](language/Null_The_Mistak.md)

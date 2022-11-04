@@ -30,6 +30,12 @@ module.exports = {
                     ],
                 },
             ],
+            '/language/': [
+                {
+                    title:'Null: 价值百亿的错误',
+                    path:'Null_The_Mistake'
+                }
+            ]
 
         },
         sidebarDepth: 2,
