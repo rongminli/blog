@@ -16,6 +16,11 @@ module.exports = {
                         {
                             title: '6.2 匹配控制流结构',
                             path: '6_enums_and_pattern_matching/6.2_The_match_control_flow_construct',
+                        },
+                        {
+                            title: '6.3 简明控制流if let',
+                            path: '6_enums_and_pattern_matching/6.3_concise_control_flow_with_if_let.md'
+
                         }
                     ],
                 },
@@ -32,8 +37,8 @@ module.exports = {
             ],
             '/language/': [
                 {
-                    title:'Null: 价值百亿的错误',
-                    path:'Null_The_Mistake'
+                    title: 'Null: 价值百亿的错误',
+                    path: 'Null_The_Mistake'
                 }
             ]
 

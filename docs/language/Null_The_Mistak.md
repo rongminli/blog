@@ -222,7 +222,6 @@ function averagePatientsAge($patients) {
 
 有些语言通过Maybe/Optional的概念可选地支持，这是上面在语言级别实现的拟议解决方案的一个特殊情况。
 
-Conclusions
 ## 总结
 基于我们行业中根深蒂固的实践，使用null是一种不被鼓励的做法。尽管如此，几乎所有的商业语言都允许它，开发人员也使用它。
 
