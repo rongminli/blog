@@ -40,6 +40,30 @@ module.exports = {
                     title: 'Null: 价值百亿的错误',
                     path: 'Null_The_Mistake'
                 }
+            ],
+            '/design_pattern/': [
+                {
+                    title: '单例模式',
+                    path: 'singleton'
+                },
+                {
+                    title: '策略模式',
+                    path: 'strategy'
+                },
+                {
+                    title: '发布订阅模式（观察者模式)',
+                    path: 'observer'
+                }
+            ],
+            '/browser/': [
+                {
+                    title: '浏览器加载过程',
+                    path: 'page_load'
+                },
+                {
+                    title: "浏览器架构",
+                    path: "multi_process"
+                }
             ]
 
         },
