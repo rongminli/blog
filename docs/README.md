@@ -1,7 +1,7 @@
 # 我的博客
 ## VUE
 ### 响应式原理
-### [一 手写`reactive(obj)`和`watchEffect(fn)`](vue/reactivity/reactive.md)
+### [手写`reactive(obj)`和`watchEffect(fn)`](vue/reactivity/reactive.md)
 
 ## 设计模式
 ### [单例模式](design_pattern/singleton.md)
