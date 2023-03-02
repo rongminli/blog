@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>
+    let currentEffect = null
+    const targetEffectMap = new WeakMap()
+
+    function reactive(target) {
+        return new Proxy(target, {
+            get(target, prop, receiver) {
+                console.log(`拦截到对目标对象属性值为${prop}的访问,开始收集依赖。`)
+                // 收集依赖
+                if (currentEffect !== null) {
+                    let propEffectMap = targetEffectMap.get(target)
+                    if (!propEffectMap) {
+                        propEffectMap = new Map()
+                        targetEffectMap.set(target, propEffectMap)
+                    }
+                    let propEffectArray = propEffectMap.get(prop)
+                    if (!propEffectArray) {
+                        propEffectArray = []
+                        propEffectMap.set(prop, propEffectArray)
+                    }
+                    propEffectArray.push(currentEffect)
+                    currentEffect = null
+                }
+                return target[prop]
+            },
+            set(target, prop, value) {
+                console.log(`拦截到对目标对象属性值为${prop}的修改,新的值为${value},尝试触发副作用。`)
+                target[prop] = value
+
+                //寻找并触发全部的依赖
+                let propEffectMap = targetEffectMap.get(target)
+                if (!propEffectMap) {
+                    return
+                }
+                let propEffectArray = propEffectMap.get(prop)
+                if (propEffectArray) {
+                    propEffectArray.forEach(effect => {
+                        effect()
+                    })
+                }
+            }
+        })
+    }
+
+    function watchEffect(fn) {
+        currentEffect = fn
+        fn()
+    }
+
+    const state = {
+        count: 0
+    }
+
+    const reactivityState = reactive(state)
+
+    watchEffect(() => {
+        console.log(`这里是副作用函数,当前count的值是${state.count}。`)
+    })
+
+    reactivityState.count++   // -> 拦截到对目标对象属性值为count的访问。(修改之前要先访问一下)
+                              // -> 拦截到对目标对象属性值为count的修改，新的值为1。
+
+</script>
+
+</html>

@@ -4,6 +4,12 @@ module.exports = {
     description: 'Just playing around',
     themeConfig: {
         sidebar: {
+            '/vue/': [
+                {
+                    title: '手写`reactive(obj)`和`watchEffect(fn)`',
+                    path: 'reactivity/reactive.md'
+                },
+            ],
             '/rust/': [
                 {
                     title: '第六章 枚举和模式匹配',
@@ -64,6 +70,12 @@ module.exports = {
                     title: "浏览器架构",
                     path: "multi_process"
                 }
+            ],
+            '/ai/': [
+                {
+                    title: '什么是机器学习？',
+                    path: 'what_is_machine_leaning'
+                },
             ]
 
         },

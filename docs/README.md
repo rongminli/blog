@@ -1,8 +1,7 @@
----
-sidebar: auto
----
-
 # 我的博客
+## VUE
+### 响应式原理
+### [一 手写`reactive(obj)`和`watchEffect(fn)`](vue/reactivity/reactive.md)
 
 ## 设计模式
 ### [单例模式](design_pattern/singleton.md)
@@ -32,4 +31,7 @@ rust标准库中包含一些非常有用的集合数据类型。大多数其他�
 ## 浏览器
 ### [网页加载过程](browser/page_load.md)
 ### [多进程架构](browser/multi_process.md)
+
+## AI
+### [什么是机器学习](ai/what_is_machine_leaning.md)
 
