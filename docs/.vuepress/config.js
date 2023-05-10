@@ -1,6 +1,14 @@
 module.exports = {
+    extendMarkdown(md) {
+        md.set({ html: true });
+        md.use(require("markdown-it-katex"));
+    },
+    head: [
+        ['link', { rel: 'stylesheet', href: 'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css' }],
+        ['link', { rel: "stylesheet", href: "https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/2.10.0/github-markdown.min.css" }]
+    ],
     base: '/blog/',
-    title: 'LRM的博客',
+    title: 'LRM的笔记',
     description: 'Just playing around',
     themeConfig: {
         sidebar: {
@@ -76,8 +84,17 @@ module.exports = {
                     title: '什么是机器学习？',
                     path: 'what_is_machine_leaning'
                 },
+            ],
+            '/algorithm/': [
+                {
+                    title: '排序算法',
+                    path: 'sort.md'
+                },
+                {
+                    title: '最大子数组',
+                    path: 'max_subarray.md'
+                },
             ]
-
         },
         sidebarDepth: 2,
     },
